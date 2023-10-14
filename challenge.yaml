@@ -1,0 +1,39 @@
+apiVersion: v1
+data:
+  TEST1: test1
+  TEST2: test2
+kind: ConfigMap
+metadata:
+  name: config-map-1
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod
+  name: pod
+spec:
+
+
+  containers:
+    - image: nginx
+      name: pod
+      securityContext:
+        capabilities:
+          add:
+            - SYS_TIME
+
+      env:
+        - name: aa
+          valueFrom:
+            configMapKeyRef:
+              name: config-map-1
+              key: TEST1
+        - name: bb
+          valueFrom:
+            configMapKeyRef:
+              key: TEST2
+              name: config-map-1
+
+      resources: {}
