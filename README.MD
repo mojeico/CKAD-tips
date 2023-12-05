@@ -13,6 +13,12 @@
 * Create pod with command sleep - `kubectl run busybox --image=busybox --restart=Never -- sleep 1000`
 * Create pod with labels - `kubectl run nginx --image=nginx  --labels="app=nginx,env=prod"`
 * Create pod and expose port (--expose - craete service) - `kubectl run nginx --image=nginx --port=80 --dry-run=client -o yaml`
+* Create pod redis - `kubectl run redis --dry-run=client -o yaml -n redis --image=redis:5.0.4 --port=6379 --env MASTER=true --env ENV=dev -- redis-server /redis-master/redis.conf`
+
+
+# Test pod 
+* Create test pod - `kubectl run busybox --image=busybox -it --rm --restart=Never -- sh`
+* Request - `wget -O- foo:6262`
 
 
 # COPY FROM POD 
@@ -25,18 +31,22 @@
 * Scale deployment - `kubectl scale deployment nginx-deploy --replicas=4`
 * Update image of deployment - `kubectl set image deployment/nginx-deploy nginx-deploy=nginx:1.17`
 * Add env from secret - `kubectl set env --from=secret/ldh-secret666 deployment/ldhsecretapp`
-* Add env from configmap - `kubectl set env --from=configmap/config-map-1 deployment/ldhsecretapp`
+* Add env from configmap - `kubectl set env --from=configmap/config-map-1 deployment/secretapp`
 * Add env - `kubectl set env deployment/ldhsecretapp STORAGE_DIR=/data`
+
+# RESOURCE 
+* Set resources for deployment - `kubectl set resources deployment nginx-deploy --requests=cpu=200m,memory=512Mi --limits=cpu=200m,memory=512Mi`
 
 
 # AUTO SCALE (HPA)
 * Autoscale the deployment - `kubectl autoscale deploy nginx --min=5 --max=10 --cpu-percent=80`
-
+* Get Autoscale - `kubectl get hpa`
 
 # ROLLOUT
+* Get history - `kubectl rollout history deployment/nginx-deploy`
 * Rollout deployment image - `kubectl rollout undo deployment/nginx-deploy`
+* Rollout deployment image to revision - `kubectl rollout undo deployment/nginx-deploy --to-revision=1`
 * Get rollout history - `kubectl rollout history deployment/nginx-deploy --revision=1`
-* Rollout to revision - `kubectl rollout undo deployment/nginx-deploy --to-revision=1`
 
 # EVENTS
 * Get events - `kubectl get events`
@@ -64,11 +74,12 @@
 
 # INGRESS
 * Create ingress with host - `kubectl create ingress ingress-vh-routing --rule="watch.ecomstore/video=video-service:30093"`
-
+* Create ingress with host - `kubectl create ingress catch-all  --rule="/path=svc:port"`
 
 # SERVICE ACCOUNT
 * Create service account - `kubectl create serviceaccount dashboard-sa`
-
+* Create API token for sa - `kubectl create token service-account-name`
+* Attach service account - `kubectl set serviceaccount deployment nginx-deployment serviceaccount1`
 
 # ROLE 
 * Create role - `kubectl create role scaler --verb=get --resource=deployments --resource-name=purple`
@@ -96,11 +107,32 @@
 
 # Annotation 
 * Add annotation to pod - `kubectl annotate po nginx1 nginx2 nginx3 description='my description'`
+* Add annotation to namespace - `kubectl annotate namespace denver description='for ckad lab'`
 * Remove annotation - `kubectl annotate po nginx description-`
 
-# QUOTA
-* Create quota - `kubectl create quota my-rq --hard=requests.cpu=1,requests.memory=1Gi,limits.cpu=2,limits.memory=2Gi,pods=10,secrets=10`
+# QUOTA + LIMIT RANGE 
+* Create quota (resourcequota) - `kubectl create quota my-rq --hard=requests.cpu=1,requests.memory=1Gi,limits.cpu=2,limits.memory=2Gi,pods=10,secrets=10`
+* Create limit range - `https://kubernetes.io/docs/concepts/policy/limit-range/`
 
+
+* Get quota - `kubectl get quota`
+* Get limitrange - `kubectl get limitrange`
+
+
+
+
+# Canary Deployment
+1. kubectl create deployment blue-deployment --replicas=10 --image=nginx --port=80
+2. kubectl label deployment blue-deployment app=blue-deployment tier=web
+3. kubectl expose deployment blue-deployment --port=80 --target-port=8080 --name=bg-service 
+4. kubectl create deployment green-deployment --image=nginx --port=80 --replicas=10
+5. kubectl label deployment green-deployment app=green-deployment tier=web
+6. kubectl scale --replicas=7 deployment blue-deployment
+7. kubectl scale --replicas=3 deployment green-deployment
+8. !!! Change bg-service selector to tier=web
+---
+1. kubectl run remote-run --image=busybox --restart=Never --rm -it -- sh
+2. wget -qO- bg-service
 
 
 # HELM
@@ -121,4 +153,13 @@
 * Helm rollback - `helm rollback mynode 1`
 * Helm uninstall - `helm uninstall mynode`
 
+# INSTALL
+* add repo - `helm repo add bitnami https://charts.bitnami.com/bitnami`
+* update repo - `helm repo update`
+* install - `helm install tri-color bitnami/nginx --create-namespace --namespace delhi`
 
+# UPDATE
+* Update - `helm upgrade --install tri-color --version=9.5.0 bitnami/nginx --create-namespace --namespace delhi`
+
+# UNINSTALL 
+* Uninstall - `helm uninstall tri-color -n delhi`

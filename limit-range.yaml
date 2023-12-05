@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: my-limit
+spec:
+  limits:
+    - max:
+        memory: 1Gi  # 👈👈👈 Change this value
+        cpu: 250m    # 👈👈👈 Change this value
+      type: Pod      # 👈👈👈 Change this value
+
+---
+

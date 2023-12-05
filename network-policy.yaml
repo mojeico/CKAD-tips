@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: web-policy  #👈👈👈 Change
+  namespace: netpol-namespace
+spec:
+  podSelector:
+    matchLabels:
+      tier: web #👈👈👈 Change - Which pod does this Network Policy Apply to i.e. any pod with label tier=web
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              tier: app #👈👈👈 Egress - Traffic to pod with label tier=app
+      ports:
+        - port: 80

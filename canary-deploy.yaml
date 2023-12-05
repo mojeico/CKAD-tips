@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: blue-deployment
+  name: blue-deployment
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: blue-deployment
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: blue-deployment
+        tier: web #👈👈👈 Add the label: `tier=web`
+    spec:
+      containers:
+        - image: docker.io/jamesbuckett/blue:latest
+          name: blue
+          ports:
+            - containerPort: 80
+          resources: {}
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: blue-deployment
+  name: bg-service
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    # app: blue-deployment #👈👈👈 Delete this
+    tier: web #👈👈👈 Add the label:  `tier=web`. This is the sauce. One label pointing to both deployments
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: green-deployment
+  name: green-deployment
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: green-deployment
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: green-deployment
+        tier: web #👈👈👈 Add the label:  `tier=web`
+    spec:
+      containers:
+        - image: docker.io/jamesbuckett/green:latest
+          name: green
+          ports:
+            - containerPort: 80
+          resources: {}
+status: {}
+
+
+---
+
+
+# kubectl scale --replicas=7 deployment blue-deployment
+# kubectl scale --replicas=3 deployment green-deployment
+# kubectl get pods -L tier,version
+
+# kubectl run remote-run --image=busybox --restart=Never --rm -it
+# wget -qO- bg-service
