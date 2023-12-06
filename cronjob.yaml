@@ -3,19 +3,16 @@ kind: CronJob
 metadata:
   name: cron-job
 spec:
-
+  startingDeadlineSeconds: 16  # if it runs late by more than 16 secs, it should be counted as failed.
   successfulJobsHistoryLimit: 2
   failedJobsHistoryLimit: 3
-
-
-
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       activeDeadlineSeconds: 30 # terminated by kubernetes if it takes more than 30 seconds to execute
       backoffLimit: 3 # How many pod in job needs to be failed - Pod count for job
-      completions: 5 # How many pod in job needs to be complete - Pod count for job
-      parallelism: 3 # Create 3 pods in job by one time
+      completions: 10 # How many pod in job needs to be complete - Pod count for job
+      parallelism: 2 # Create 2 pods in job by one time
       template:
         spec:
 

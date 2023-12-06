@@ -12,9 +12,8 @@
 * Get logs form previous pod - `kubectl logs nginx -p`
 * Create pod with command sleep - `kubectl run busybox --image=busybox --restart=Never -- sleep 1000`
 * Create pod with labels - `kubectl run nginx --image=nginx  --labels="app=nginx,env=prod"`
+* Create pod with env - `kubectl run pod-name --image=nginx --env ENV=dev --env app=test-app`
 * Create pod and expose port (--expose - craete service) - `kubectl run nginx --image=nginx --port=80 --dry-run=client -o yaml`
-* Create pod redis - `kubectl run redis --dry-run=client -o yaml -n redis --image=redis:5.0.4 --port=6379 --env MASTER=true --env ENV=dev -- redis-server /redis-master/redis.conf`
-
 
 # Test pod 
 * Create test pod - `kubectl run busybox --image=busybox -it --rm --restart=Never -- sh`
@@ -30,9 +29,9 @@
 * Crate deployment with replicas - `kubectl create deployment nginx-deploy --image=nginx:1.16 --replicas=4 --dry-run=client -o yaml`
 * Scale deployment - `kubectl scale deployment nginx-deploy --replicas=4`
 * Update image of deployment - `kubectl set image deployment/nginx-deploy nginx-deploy=nginx:1.17`
+* Add env - `kubectl set env deployment/ldhsecretapp STORAGE_DIR=/data`
 * Add env from secret - `kubectl set env --from=secret/ldh-secret666 deployment/ldhsecretapp`
 * Add env from configmap - `kubectl set env --from=configmap/config-map-1 deployment/secretapp`
-* Add env - `kubectl set env deployment/ldhsecretapp STORAGE_DIR=/data`
 
 # RESOURCE 
 * Set resources for deployment - `kubectl set resources deployment nginx-deploy --requests=cpu=200m,memory=512Mi --limits=cpu=200m,memory=512Mi`
@@ -44,8 +43,8 @@
 
 # ROLLOUT
 * Get history - `kubectl rollout history deployment/nginx-deploy`
-* Rollout deployment image - `kubectl rollout undo deployment/nginx-deploy`
-* Rollout deployment image to revision - `kubectl rollout undo deployment/nginx-deploy --to-revision=1`
+* Rollout deployment - `kubectl rollout undo deployment/nginx-deploy`
+* Rollout deployment to revision - `kubectl rollout undo deployment/nginx-deploy --to-revision=1`
 * Get rollout history - `kubectl rollout history deployment/nginx-deploy --revision=1`
 
 # EVENTS
