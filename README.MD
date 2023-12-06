@@ -54,7 +54,7 @@
 # CONFIGMAP SECRET 
 * Create configmap with value from command - `kubectl create configmap my-config-map --from-literal=APP_COLOR=blue --from-literal=APP_MOD=prod`
 * Create configmap from file - `kubectl create configmap my-config-map --from-file=app_config.properties`
-* Create configmap from file - `kubectl create configmap configmap-web-moon-html --from-file=index.html=/opt/course/15/web-moon.html`  # important to set the index.html key
+* Create configmap from file with key index.html  - `kubectl create configmap configmap-web-moon-html --from-file=index.html=/opt/course/15/web-moon.html`  # important to set the index.html key
 * Create configmap from env file - `kubectl create configmap test-env --from-env-file=env-file.env`
 * Create secret - `kubectl create secret generic my-secret --from-literal=DB_PASSWORD=password`
 * Get token value from secret - `kubectl get secret <secret_name> -o jsonpath={.data.token} | base64 -d`
