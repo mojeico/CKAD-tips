@@ -1,6 +1,12 @@
 
-
-# KUBERNETES COMMANDS
+# Links with tasks and exercises to practice :
+- https://github.com/jamesbuckett/ckad-questions/blob/main/01-ckad-design-build.md
+- https://github.com/dguyhasnoname/CKAD-TheHardWay/blob/master/README.md
+- https://github.com/dgkanatsios/CKAD-exercises/blob/main/README.md
+- https://github.com/ibrahimatay/CKAD-Exercises/blob/master/exercise-1/README.md
+- https://github.com/vishnudeevi/ckad-practice/blob/master/1_core_concepts/core_concepts.md
+- https://github.com/OneideLuizSchneider/CKAD/blob/main/00-TIPS.md
+- https://github.com/bbachi/CKAD-Practice-Questions/blob/master/README.md
 
 
 # POD
