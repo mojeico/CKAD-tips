@@ -19,11 +19,12 @@
 * Create pod with command sleep - `kubectl run busybox --image=busybox --restart=Never -- sleep 1000`
 * Create pod with labels - `kubectl run nginx --image=nginx  --labels="app=nginx,env=prod"`
 * Create pod with env - `kubectl run pod-name --image=nginx --env ENV=dev --env app=test-app`
-* Create pod and expose port (--expose - craete service) - `kubectl run nginx --image=nginx --port=80 --dry-run=client -o yaml`
+* Create pod and expose port (--expose - create service) - `kubectl run nginx --image=nginx --port=80 --dry-run=client -o yaml`
+
 
 # Test pod 
 * Create test pod - `kubectl run busybox --image=busybox -it --rm --restart=Never -- sh`
-* Request - `wget -O- foo:6262`
+* Request - `wget -O- service_name:service_port`
 
 
 # COPY FROM POD 
@@ -39,6 +40,7 @@
 * Add env from secret - `kubectl set env --from=secret/ldh-secret666 deployment/ldhsecretapp`
 * Add env from configmap - `kubectl set env --from=configmap/config-map-1 deployment/secretapp`
 
+
 # RESOURCE 
 * Set resources for deployment - `kubectl set resources deployment nginx-deploy --requests=cpu=200m,memory=512Mi --limits=cpu=200m,memory=512Mi`
 
@@ -47,11 +49,13 @@
 * Autoscale the deployment - `kubectl autoscale deploy nginx --min=5 --max=10 --cpu-percent=80`
 * Get Autoscale - `kubectl get hpa`
 
+
 # ROLLOUT
 * Get history - `kubectl rollout history deployment/nginx-deploy`
 * Rollout deployment - `kubectl rollout undo deployment/nginx-deploy`
 * Rollout deployment to revision - `kubectl rollout undo deployment/nginx-deploy --to-revision=1`
 * Get rollout history - `kubectl rollout history deployment/nginx-deploy --revision=1`
+
 
 # EVENTS
 * Get events - `kubectl get events`
@@ -75,23 +79,26 @@
 
 # SERVICE
 * Create NodePort service for deployment - `kubectl expose deployment nginx-deploy --port=80 --target-port=80 --name=nginx-service --type=NodePort`
+* Target port - pod/deployment port 
+* Port - service port 
 
 
 # INGRESS
 * Create ingress with host - `kubectl create ingress ingress-vh-routing --rule="watch.ecomstore/video=video-service:30093"`
 * Create ingress with host - `kubectl create ingress catch-all  --rule="/path=svc:port"`
 
+
 # SERVICE ACCOUNT
 * Create service account - `kubectl create serviceaccount dashboard-sa`
 * Create API token for sa - `kubectl create token service-account-name`
 * Attach service account - `kubectl set serviceaccount deployment nginx-deployment serviceaccount1`
+
 
 # ROLE 
 * Create role - `kubectl create role scaler --verb=get --resource=deployments --resource-name=purple`
 
 
 # CLUSTER ROLE AND CLUSTER ROLE BINDING
-
 * Create clusterrole - `kubectl create clusterrole pvviewer-role --verb=list --resource=PersistentVolumes`
 * Crate clusterrolebinding for service - `kubectl create clusterrolebinding pvviewer-role-binding --clusterrole=pvviewer-role --serviceaccount=default:pvviewer`
 
@@ -103,6 +110,15 @@
 * Taint node - `kubectl taint nodes node-name key=value:NoSchedule`
 * Untaint node - `kubectl taint node node-name key-`
 
+
+# TOLERATIONS
+* Tolerations allow scheduling pods to node with taint - https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#concepts
+
+
+# Node Affinity
+* Allowing you to constrain which nodes your Pod can be scheduled on based on node labels.
+
+
 # NODE LABELS
 * Set label to node - `kubectl label nodes node-name key=value`
 * Set label to pod - `kubectl label pod type=runner protected=true`
@@ -110,10 +126,12 @@
 * Get pod with specific label - `kubectl get po -l app=v2` 
 * Remove label - `kubectl label po nginx tier-`
 
+
 # Annotation 
 * Add annotation to pod - `kubectl annotate po nginx1 nginx2 nginx3 description='my description'`
 * Add annotation to namespace - `kubectl annotate namespace denver description='for ckad lab'`
 * Remove annotation - `kubectl annotate po nginx description-`
+
 
 # QUOTA + LIMIT RANGE 
 * Create quota (resourcequota) - `kubectl create quota my-rq --hard=requests.cpu=1,requests.memory=1Gi,limits.cpu=2,limits.memory=2Gi,pods=10,secrets=10`
@@ -122,7 +140,6 @@
 
 * Get quota - `kubectl get quota`
 * Get limitrange - `kubectl get limitrange`
-
 
 
 
@@ -158,13 +175,16 @@
 * Helm rollback - `helm rollback mynode 1`
 * Helm uninstall - `helm uninstall mynode`
 
+
 # INSTALL
 * add repo - `helm repo add bitnami https://charts.bitnami.com/bitnami`
 * update repo - `helm repo update`
 * install - `helm install tri-color bitnami/nginx --create-namespace --namespace delhi`
 
+
 # UPDATE
 * Update - `helm upgrade --install tri-color --version=9.5.0 bitnami/nginx --create-namespace --namespace delhi`
+
 
 # UNINSTALL 
 * Uninstall - `helm uninstall tri-color -n delhi`
