@@ -144,11 +144,11 @@
 
 
 # Canary Deployment
-1. kubectl create deployment blue-deployment --replicas=10 --image=nginx --port=80
-2. kubectl label deployment blue-deployment app=blue-deployment tier=web
-3. kubectl expose deployment blue-deployment --port=80 --target-port=80 --name=bg-service 
-4. kubectl create deployment green-deployment --image=nginx --port=80 --replicas=10
-5. kubectl label deployment green-deployment app=green-deployment tier=web
+1. kubectl create deployment blue-deployment --image=docker.io/jamesbuckett/blue:latest --replicas=10 --port=80 --dry-run=client -o yaml > deployment-blue.yaml
+2. add "tier: web" to pod label
+3. kubectl expose deployment blue-deployment --port=80 --target-port=80 --name=bg-service
+4. kubectl create deployment green-deployment --image=docker.io/jamesbuckett/green:latest --replicas=10 --port=80 --dry-run=client -o yaml > deployment-green.yaml
+5. add "tier: web" to pod label
 6. kubectl scale --replicas=7 deployment blue-deployment
 7. kubectl scale --replicas=3 deployment green-deployment
 8. !!! Change bg-service selector to tier: web
