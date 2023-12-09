@@ -146,7 +146,7 @@
 # Canary Deployment
 1. kubectl create deployment blue-deployment --replicas=10 --image=nginx --port=80
 2. kubectl label deployment blue-deployment app=blue-deployment tier=web
-3. kubectl expose deployment blue-deployment --port=80 --target-port=8080 --name=bg-service 
+3. kubectl expose deployment blue-deployment --port=80 --target-port=80 --name=bg-service 
 4. kubectl create deployment green-deployment --image=nginx --port=80 --replicas=10
 5. kubectl label deployment green-deployment app=green-deployment tier=web
 6. kubectl scale --replicas=7 deployment blue-deployment
