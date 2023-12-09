@@ -151,7 +151,7 @@
 5. kubectl label deployment green-deployment app=green-deployment tier=web
 6. kubectl scale --replicas=7 deployment blue-deployment
 7. kubectl scale --replicas=3 deployment green-deployment
-8. !!! Change bg-service selector to tier=web
+8. !!! Change bg-service selector to tier: web
 ---
 1. kubectl run remote-run --image=busybox --restart=Never --rm -it -- sh
 2. wget -qO- bg-service
