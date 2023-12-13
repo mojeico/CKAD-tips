@@ -81,6 +81,7 @@
 * Create NodePort service for deployment - `kubectl expose deployment nginx-deploy --port=80 --target-port=80 --name=nginx-service --type=NodePort`
 * Target port - pod/deployment port 
 * Port - service port 
+* Create service - `kubectl create service nodeport  webapp-service --tcp=8080:8080 --node-port=30080` - change selector
 
 
 # INGRESS
