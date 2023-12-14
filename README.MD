@@ -36,6 +36,7 @@
 * Crate deployment with replicas - `kubectl create deployment nginx-deploy --image=nginx:1.16 --replicas=4 --dry-run=client -o yaml`
 * Scale deployment - `kubectl scale deployment nginx-deploy --replicas=4`
 * Update image of deployment - `kubectl set image deployment/nginx-deploy nginx-deploy=nginx:1.17`
+* Update image of deployment for all container (useful with 1 container) - `kubectl set image deployment/frontend *=kodekloud/webapp-color:v2`
 * Add env - `kubectl set env deployment/ldhsecretapp STORAGE_DIR=/data`
 * Add env from secret - `kubectl set env --from=secret/ldh-secret666 deployment/ldhsecretapp`
 * Add env from configmap - `kubectl set env --from=configmap/config-map-1 deployment/secretapp`
