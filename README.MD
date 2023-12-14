@@ -108,7 +108,8 @@
 
 
 # TAINT 
-* Taint node - `kubectl taint nodes node-name key=value:NoSchedule`
+* Taint node - `kubectl taint nodes node-name key=value:taint-effect`
+* Taint effect - NoSchedule, PreferNoSchedule, NoExecute
 * Untaint node - `kubectl taint node node-name key-`
 
 
@@ -138,6 +139,8 @@
 * Create quota (resourcequota) - `kubectl create quota my-rq --hard=requests.cpu=1,requests.memory=1Gi,limits.cpu=2,limits.memory=2Gi,pods=10,secrets=10`
 * Create limit range - `https://kubernetes.io/docs/concepts/policy/limit-range/`
 
+* Quota - resource for all resource together for namespace 
+* Limit range - Default resource for container (for example) if we didn't set resource in pod 
 
 * Get quota - `kubectl get quota`
 * Get limitrange - `kubectl get limitrange`
