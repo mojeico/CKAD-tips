@@ -193,3 +193,4 @@
 
 # UNINSTALL 
 * Uninstall - `helm uninstall tri-color -n delhi`
+* 
