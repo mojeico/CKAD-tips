@@ -78,6 +78,28 @@
 * Create cronjob - `kubectl create cronjob show-data --schedule="*/1 * * * *" --image=busybox  -- /bin/sh -c 'echo "current date: $(date)"'`
 
 
+# Services types 
+
+- cluster ip
+  - ClusterIP Services assign an IP address that can be used to reach the Service from within your cluster.
+- node port 
+  - NodePort Services are exposed externally through a specified static port binding on each of your Nodes.
+  - Минусы 
+    - Один порт — один сервис
+    - Диапазон 30000-32767 (хоть и изменяемый, но делать это надо крайне осторожно)
+    -  Если IP ноды может измениться (например, в GKE или AWS при автоскейлинге), то это тоже надо учитывать
+
+- LoadBalancer - used for external cloud balancers, such as Google Cloud, which have their own provider.
+  Service will be available through your provider's external balancer, and NodePorts will be created with ports where traffic 
+  from the provider and ClusterIP will arrive.
+    - Правда, работает он только в облаках, т.к. использует нативные облачные решения текущего провайдера. 
+      Например, при использовании в GKE будет поднят Network Load Balancer с отдельным внешним IP-адресом,
+      который будет маршрутизировать весь трафик на указанный сервис.
+    - Огромный минус в том, что для каждого сервиса будет использоваться свой LoadBalancer со своим внешним IP, 
+      и придётся в результате платить сразу за несколько LoadBalancer’ов.
+
+
+
 # SERVICE
 * Create NodePort service for deployment - `kubectl expose deployment nginx-deploy --port=80 --target-port=80 --name=nginx-service --type=NodePort`
 * Target port - pod/deployment port 
@@ -110,7 +132,11 @@
 
 # TAINT 
 * Taint node - `kubectl taint nodes node-name key=value:taint-effect`
-* Taint effect - NoSchedule, PreferNoSchedule, NoExecute
+* Taint effect 
+  * NoSchedule - will not schedule new pods on the node
+  * PreferNoSchedule - will try to avoid scheduling new pods on the node
+  * NoExecute - will evict existing pods that do not tolerate the taint
+  
 * Untaint node - `kubectl taint node node-name key-`
 
 
