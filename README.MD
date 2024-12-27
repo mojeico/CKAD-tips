@@ -120,7 +120,7 @@
 
 # ROLE 
 * Create role - `kubectl create role scaler --verb=get --resource=deployments --resource-name=purple`
-
+* Create rolebinding -  `kubectl create rolebinding dev-user-binding --role=developer --user=dev-user`
 
 # CLUSTER ROLE AND CLUSTER ROLE BINDING
 * Create clusterrole - `kubectl create clusterrole pvviewer-role --verb=list --resource=PersistentVolumes`
@@ -129,6 +129,9 @@
 - role         - List all pods in a namespace
 - cluster role - List all pods in all namespaces. Get a list of all nodes and theis public IP.
 
+# TEST ROLE 
+- test role dev-user - `kubectl auth can-i get pods --as dev-user --namespace dev`
+- if the user can list pods in the default namespace. - `kubectl get pods --as dev-user`
 
 # TAINT 
 * Taint node - `kubectl taint nodes node-name key=value:taint-effect`
